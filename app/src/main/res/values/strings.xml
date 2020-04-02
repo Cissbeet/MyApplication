@@ -10,5 +10,12 @@
     <string name="Temp_inp1">请输入温度值(以C或F结尾)</string>
     <string name="Temp_btn1">转换</string>
     <string name="Temp_tv2_result">结果</string>
-    <string name="Temp_tv3">Hello</string>>
+    <string name="Temp_tv3">Hello</string>
+    <string name="Record_tv1">Team A</string>
+    <string name="Record_tv2">0</string>
+    <string name="Record_btn1">+3 points</string>
+    <string name="Record_btn2">+2 points</string>
+    <string name="Record_btn3">+1 points</string>
+    <string name="Record_btn4">reset</string>
+    <string name="Record_tv3">Record Score</string>>
 </resources>

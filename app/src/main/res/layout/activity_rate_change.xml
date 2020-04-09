@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:layout_height="match_parent"
+    tools:context=".RateChange">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="@string/Rate_tv2"
+        android:gravity="center"
+        android:textSize="40sp" />
+
+    <EditText
+        android:id="@+id/Rate_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/Rate_ed1"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/Rate_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/Rate_tv1"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/Rate_dol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:onClick="onclick"
+        android:text="@string/Rate_btn1"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/Rate_pou"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:onClick="onclick"
+        android:text="@string/Rate_btn2"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/Rate_yen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onclick"
+        android:text="@string/Rate_btn3"
+        android:textSize="20sp" />
+
+</LinearLayout>

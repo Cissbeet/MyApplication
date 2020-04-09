@@ -18,5 +18,11 @@
     <string name="Record_btn3">+1 points</string>
     <string name="Record_btn4">reset</string>
     <string name="Record_tv3">Record Score</string>
-    <string name="team_b">Team B</string>>
+    <string name="team_b">Team B</string>
+    <string name="Rate_ed1">Please input rmb number</string>
+    <string name="Rate_tv1">结果：</string>
+    <string name="Rate_btn1">Dollar</string>
+    <string name="Rate_btn2">Pound</string>
+    <string name="Rate_btn3">Yen</string>
+    <string name="Rate_tv2">汇率转换</string>>
 </resources>

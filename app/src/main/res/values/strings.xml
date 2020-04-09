@@ -17,5 +17,6 @@
     <string name="Record_btn2">+2 points</string>
     <string name="Record_btn3">+1 points</string>
     <string name="Record_btn4">reset</string>
-    <string name="Record_tv3">Record Score</string>>
+    <string name="Record_tv3">Record Score</string>
+    <string name="team_b">Team B</string>>
 </resources>

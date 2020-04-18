@@ -56,8 +56,16 @@
         android:id="@+id/Rate_yen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onclick"
+        android:onClick="openOne"
         android:text="@string/Rate_btn3"
+        android:layout_marginBottom="20dp"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/Rate_btnfig" />
 
 </LinearLayout>

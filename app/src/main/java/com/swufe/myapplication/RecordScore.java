@@ -3,6 +3,7 @@ package com.swufe.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -57,4 +58,5 @@ public class RecordScore extends AppCompatActivity {
         int newScore = Integer.parseInt(oldScore) + add;
         score2.setText("" + newScore);       //注意setText中必须是字符串类型
     }
+
 }

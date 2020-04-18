@@ -24,5 +24,8 @@
     <string name="Rate_btn1">Dollar</string>
     <string name="Rate_btn2">Pound</string>
     <string name="Rate_btn3">Yen</string>
-    <string name="Rate_tv2">汇率转换</string>>
+    <string name="Rate_tv2">汇率转换</string>
+    <string name="Rate_btnfig">config</string>
+    <string name="Config_btn" >Save</string>
+    <string name="menu_1">vaules</string>
 </resources>

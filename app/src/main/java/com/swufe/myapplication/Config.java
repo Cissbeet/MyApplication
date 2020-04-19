@@ -57,6 +57,8 @@ public class Config extends AppCompatActivity {
         Log.i(TAG,"save:newyen ="+newyen);
         intent.putExtras(bdl);
         setResult(2,intent);
+        //返回调用页面
+        finish();
 
     }
 }

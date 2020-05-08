@@ -18,6 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -63,8 +68,16 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
             public void handleMessage(@NonNull Message msg) {
                 //获得子线程返回的信息，并处理信息
                 if(msg.what == 5){  //判断信息
-                    String info = (String) msg.obj;
-                    Log.i("handleMessage","msg ="+info);
+                    Bundle bdl = (Bundle) msg.obj;
+                    doullarRate = bdl.getFloat("doullar-rate");
+                    poundRate = bdl.getFloat("pound-rate");
+                    yenRate = bdl.getFloat("yen-rate");
+
+                    Log.i("run:","doullarRate" +doullarRate );
+                    Log.i("run:","poundRate" +poundRate );
+                    Log.i("run:","yenRate" +yenRate );
+
+                    Toast.makeText(RateChange.this, "汇率已更新", Toast.LENGTH_SHORT).show();
                 }
                 super.handleMessage(msg);
 
@@ -171,25 +184,72 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
                 e.printStackTrace();
             }
         }
+        //用户信息保存
+        Bundle bundle = new Bundle();
+
         //获得信息并发送给handler
         Message msg = handler.obtainMessage(2);
-        msg.obj = "This is message";
+//        msg.obj = "This is message";
+        msg.obj = bundle;
         handler.sendMessage(msg);
 
-        //获取网络数据,注意需要在main中添加权限internet
-        URL url = null;
-        try {
-            url = new URL("http://www.usd.cny.com/icbc.htm");
-            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            InputStream in = http.getInputStream();
 
-            String html = inputSteamtoString(in);
-            Log.i("run","html="+html);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+
+
+        //获取网络数据,注意需要在main中添加权限internet
+//        URL url = null;
+//        try {
+//            url = new URL("http://www.usd.cny.com/icbc.htm");
+//            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+//            InputStream in = http.getInputStream();
+//
+//            String html = inputSteamtoString(in);
+//            Log.i("run","html="+html);
+//            Document doc = Jsoup.parse(html); //从html文件直接转成document对象
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        //直接从网络中获得document对象
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("https://www.boc.cn/sourcedb/whpj/").get();
+            Log.i("run...",doc.title());
+            //查找需要的数据在哪个table里
+            Elements tables = doc.getElementsByTag("table");
+            int i = 1;
+//            for(Element table : tables){
+//                Log.i("table","table["+i+"] = "+table);
+//                i++;
+//            }
+            Element table2 = tables.get(1);
+            Log.i("run...","table2="+table2);
+            Elements tds = table2.getElementsByTag("td");
+            for(int a=0;a<tds.size();a+=8){
+                Element td1 = tds.get(a);
+                Element td2 = tds.get(a+5);
+                Log.i("run:",td1.text()+"==>"+td2.text());
+                if("美元".equals(td1.text())){
+                    bundle.putFloat("doullar-rate",100f/Float.parseFloat(td2.text()));
+                }else if("英镑".equals(td1.text())){
+                    bundle.putFloat("pound-rate",100f/Float.parseFloat(td2.text()));
+                }else if("日元".equals(td1.text())){
+                    bundle.putFloat("yen-rate",100f/Float.parseFloat(td2.text()));
+                }
+            }
+
+//            for(Element td:tds){
+//                Log.i("run:","td="+td);
+//                Log.i("run:","text="+td.text());//注意两者可能有区别，也可能没有区别
+//                Log.i("run:","html="+td.html());
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
     }
 

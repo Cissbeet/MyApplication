@@ -1,5 +1,6 @@
 package com.swufe.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -59,4 +60,25 @@ public class RecordScore extends AppCompatActivity {
         score2.setText("" + newScore);       //注意setText中必须是字符串类型
     }
 
+    //保存旋转时的数据
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String score = ((TextView)findViewById(R.id.R_tv3)).getText().toString();
+        String score2 = ((TextView)findViewById(R.id.R_tv3b)).getText().toString();
+        Log.i("run:","onSaveInstanceState");
+        outState.putString("score",score);
+        outState.putString("score2",score2);
+    }
+
+    //旋转之后，恢复旋转前的数据
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String score = savedInstanceState.getString("score");
+        String score2 = savedInstanceState.getString("score2");
+        Log.i("run:","onRestoreInstanceState");
+        ((TextView)findViewById(R.id.R_tv3)).setText(score);
+        ((TextView)findViewById(R.id.R_tv3b)).setText(score2);
+    }
 }

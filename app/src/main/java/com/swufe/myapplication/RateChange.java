@@ -32,14 +32,20 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.SimpleTimeZone;
 
 public class RateChange extends AppCompatActivity implements Runnable{  //实现Runnable接口开启子线程
     EditText in;
     TextView out;
     Handler handler;
+    SharedPreferences.Editor editor;
     private float doullarRate = 0.1415f;
     private float poundRate = 0.1141f;
     private float yenRate = 15.392f;
+    private String updateDate ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
         setContentView(R.layout.activity_rate_change);
         in = findViewById(R.id.Rate_in);
         out = findViewById(R.id.Rate_out);
+
         //获得sp里的数据
         SharedPreferences sp = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
         //也可以使用下面这个方式保存数据，但是只能有一个文件用于保存数据，上面的方法可以有多个文件
@@ -54,14 +61,29 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
         doullarRate = sp.getFloat("Rate_doullar",0.0f);
         poundRate = sp.getFloat("Rate_pound",0.0f);
         yenRate = sp.getFloat("Rate_yen",0.0f);
+        updateDate = sp.getString("update_date","");
+
+        //获取当前系统时间
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        final String todayStr = sdf.format(today);
 
         Log.i("doullar", "onCreate:sp   doullarRate =" + doullarRate);
         Log.i("pound", "onCreate:sp  poundRate =" + poundRate);
         Log.i("yen", "onCreate:sp   yenRate =" + yenRate);
+        Log.i("date", "onCreate:sp   updateDate =" + updateDate);
 
-        //开启子线程
-        Thread t = new Thread(this);   //注意有this
-        t.start();
+        //判断时间
+        if(!todayStr.equals(updateDate)){
+            Log.i("date","需要更新");
+            //开启子线程
+            Thread t = new Thread(this);   //注意有this
+            t.start();
+        }else {
+            Log.i("date","不需要更新");
+        }
+
+
 
         handler = new Handler(){  //改写父类Handler的方法
             @Override
@@ -76,6 +98,15 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
                     Log.i("run:","doullarRate" +doullarRate );
                     Log.i("run:","poundRate" +poundRate );
                     Log.i("run:","yenRate" +yenRate );
+
+                    //获得当前时间
+                    Date today = Calendar.getInstance().getTime();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    editor.putString("update_date",todayStr);
+                    editor.putFloat("Rate_doullar",doullarRate);
+                    editor.putFloat("Rate_pound",poundRate);
+                    editor.putFloat("Rate_yen",yenRate);
+                    editor.apply();
 
                     Toast.makeText(RateChange.this, "汇率已更新", Toast.LENGTH_SHORT).show();
                 }
@@ -166,6 +197,11 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.menu_settings){
             openConfig();
+        }else if(item.getItemId()==R.id.openList){
+            //打开列表窗口
+            Log.i("openOne", "opening");
+            Intent rateList = new Intent(this, RateListActivity.class);
+            startActivityForResult(rateList, 1);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -10,4 +10,8 @@
     <item
         android:orderInCategory="101"
         android:title="@string/menu_1" />
+    <item
+        android:id="@+id/openList"
+        android:orderInCategory="102"
+        android:title="@string/Rate_menu" />
 </menu>

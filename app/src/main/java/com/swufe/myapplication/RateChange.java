@@ -99,9 +99,10 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
                     Log.i("run:","poundRate" +poundRate );
                     Log.i("run:","yenRate" +yenRate );
 
-                    //获得当前时间
-                    Date today = Calendar.getInstance().getTime();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    //创建sp用于保存数据（不需要进入config页面也可以直接将汇率数据保存到sp中）
+                    SharedPreferences sp = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    //需要保存现在的日期，以便以后做判断是否需要更新，同时将汇率数据保存到sp
                     editor.putString("update_date",todayStr);
                     editor.putFloat("Rate_doullar",doullarRate);
                     editor.putFloat("Rate_pound",poundRate);
@@ -159,7 +160,7 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
         Log.i("pound", "openOne:poundRate =" + poundRate);
         Log.i("yen", "openOne:yenRate =" + yenRate);
 //        startActivity(config);    //跳转页面
-        startActivityForResult(config, 1);
+        startActivityForResult(config, 1);//需要返回结果时使用这个
     }
 
     @Override  //传回数据使用的方法
@@ -174,7 +175,7 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
             Log.i("pound", "onA:poundRate =" + poundRate);
             Log.i("yen", "onA:yenRate =" + yenRate);
 
-            //获得sp中的数据
+            //将数据保存到sp中（只有在config页面中点击save才会将汇率数据保存到sp中）
             SharedPreferences sp = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
             //注意保存数据和获取数据的sp文件名字要一样，key也要一样
             SharedPreferences.Editor editor = sp.edit();
@@ -193,8 +194,10 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
         return true;
     }
 
+    //实现菜单功能
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //使用ID来定位菜单选项
         if(item.getItemId()==R.id.menu_settings){
             openConfig();
         }else if(item.getItemId()==R.id.openList){
@@ -210,17 +213,17 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
     //加载子线程
     @Override
     public void run() {
-        Log.i("run","running......");
+        Log.i("run", "running......");
         //休眠，有异常需要尝试
-        for(int i = 1;i < 6;i++){
-            Log.i("run","i="+i);
+        for (int i = 1; i < 6; i++) {
+            Log.i("run", "i=" + i);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        //用户信息保存
+        //用于保存获取的汇率
         Bundle bundle = new Bundle();
 
         //获得信息并发送给handler
@@ -228,8 +231,6 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
 //        msg.obj = "This is message";
         msg.obj = bundle;
         handler.sendMessage(msg);
-
-
 
 
         //获取网络数据,注意需要在main中添加权限internet
@@ -251,30 +252,29 @@ public class RateChange extends AppCompatActivity implements Runnable{  //实现
         //直接从网络中获得document对象
         Document doc = null;
         try {
-            doc = Jsoup.connect("https://www.boc.cn/sourcedb/whpj/").get();
-            Log.i("run...",doc.title());
+            doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
+            Log.i("run...", doc.title());
             //查找需要的数据在哪个table里
             Elements tables = doc.getElementsByTag("table");
-            int i = 1;
-//            for(Element table : tables){
-//                Log.i("table","table["+i+"] = "+table);
-//                i++;
-//            }
-            Element table2 = tables.get(1);
-            Log.i("run...","table2="+table2);
-            Elements tds = table2.getElementsByTag("td");
-            for(int a=0;a<tds.size();a+=8){
-                Element td1 = tds.get(a);
-                Element td2 = tds.get(a+5);
-                Log.i("run:",td1.text()+"==>"+td2.text());
-                if("美元".equals(td1.text())){
-                    bundle.putFloat("doullar-rate",100f/Float.parseFloat(td2.text()));
-                }else if("英镑".equals(td1.text())){
-                    bundle.putFloat("pound-rate",100f/Float.parseFloat(td2.text()));
-                }else if("日元".equals(td1.text())){
-                    bundle.putFloat("yen-rate",100f/Float.parseFloat(td2.text()));
+
+            Element retTable = tables.get(5);
+            Elements tds = retTable.getElementsByTag("td");
+            int tdSize = tds.size();
+            for (int i = 0; i < tdSize; i += 8) {
+                Element td1 = tds.get(i);
+                Element td2 = tds.get(i + 5);
+                Log.i("www", "td:" + td1.text() + "->" + td2.text());
+                if ("美元".equals(td1.text())) {
+                    bundle.putFloat("doullar-rate", 100f / Float.parseFloat(td2.text()));
+                } else if ("英镑".equals(td1.text())) {
+                    bundle.putFloat("pound-rate", 100f / Float.parseFloat(td2.text()));
+                } else if ("日元".equals(td1.text())) {
+                    bundle.putFloat("yen-rate", 100f / Float.parseFloat(td2.text()));
                 }
             }
+
+
+
 
 //            for(Element td:tds){
 //                Log.i("run:","td="+td);

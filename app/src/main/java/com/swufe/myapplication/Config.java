@@ -45,6 +45,7 @@ public class Config extends AppCompatActivity {
         float newdoullar = Float.parseFloat(doullar.getText().toString());
         float newpound = Float.parseFloat(pound.getText().toString());
         float newyen = Float.parseFloat(yen.getText().toString());
+
         //保存新的值
         Intent intent = getIntent();   //可以使用bundle对象来组合数据
         Bundle bdl = new Bundle();
@@ -57,7 +58,8 @@ public class Config extends AppCompatActivity {
         Log.i(TAG,"save:newyen ="+newyen);
         intent.putExtras(bdl);
         setResult(2,intent);
-        //返回调用页面
+
+        //返回调用页面（返回上一个页面)
         finish();
 
     }

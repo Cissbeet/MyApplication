@@ -11,15 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PageChange"></activity>
-        <activity android:name=".MylistActivity" />
-        <activity android:name=".InformActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MyListActivity"></activity>
+        <activity android:name=".RateCalc" android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".Mylist2Activity" />
         <activity android:name=".RateListActivity" />
         <activity android:name=".Config" />
         <activity android:name=".RateChange" />

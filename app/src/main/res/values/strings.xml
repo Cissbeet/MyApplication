@@ -36,4 +36,6 @@
     <string name="fra_1">Page1</string>
     <string name="fra_2">Page2</string>
     <string name="fra_3">Page3</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="tv">no data</string>
 </resources>

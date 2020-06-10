@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MylistActivity extends ListActivity {
+public class Mylist2Activity extends ListActivity {
     Handler handler;
     private ArrayList<HashMap<String,String>> listItem;
     private SimpleAdapter listItemAdapter;
@@ -21,7 +21,9 @@ public class MylistActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.list_item);
         initListView();
-        this.setListAdapter(listItemAdapter);
+        //自己定义的adapter
+        MyAdapter myadapter = new MyAdapter(this,R.layout.list_item,listItem);
+        setListAdapter(myadapter);
     }
     private void initListView(){
         listItem = new ArrayList<HashMap<String, String>>();
@@ -31,9 +33,11 @@ public class MylistActivity extends ListActivity {
             map.put("ItemDetail","url" + i);//网址
             listItem.add(map);
         }
-        listItemAdapter = new SimpleAdapter(this,listItem,
-                R.layout.list_item,
-                new String[] {"ItemTitle","ItemDetail"},
+
+        //准备系统已有的adapter,设置参数
+        listItemAdapter = new SimpleAdapter(this,listItem, //准备数据
+                R.layout.list_item,//准备布局
+                new String[] {"ItemTitle","ItemDetail"},//数据安排在布局当中
                 new  int[] {R.id.itemTitle,R.id.itemDetail}
                 );
     }
